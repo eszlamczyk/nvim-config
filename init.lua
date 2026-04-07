@@ -164,6 +164,23 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- [[ macOS compatibility ]]
+-- Makes nvim behave like it does on Linux (e.g. Arch).
+-- NOTE: Option-as-Meta (<M-...> mappings) also requires your terminal to send
+--       Option as Esc+key.  In iTerm2: Profiles > Keys > Left/Right Option = Esc+.
+--       In Kitty / WezTerm this is on by default.
+if vim.fn.has 'mac' == 1 then
+  -- Some macOS terminals (Terminal.app) send <BS> for <C-h>; restore expected behaviour.
+  vim.keymap.set('n', '<BS>', '<C-h>', { noremap = true, desc = 'macOS: fix C-h' })
+
+  -- Use the user's login shell so :! and :terminal behave like on Linux.
+  if vim.env.SHELL then vim.o.shell = vim.env.SHELL end
+
+  -- macOS's /usr/bin/grep doesn't support --color=auto from some neovim plugins.
+  -- Prefer Homebrew grep when available.
+  if vim.fn.executable '/opt/homebrew/bin/grep' == 1 then vim.env.PATH = '/opt/homebrew/bin:' .. vim.env.PATH end
+end
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
