@@ -19,12 +19,12 @@ return {
       }
 
       local xb = require 'xcodebuild.actions'
-      vim.keymap.set('n', '<leader>xl', xb.toggle_logs,   { desc = '[X]code [L]ogs' })
-      vim.keymap.set('n', '<leader>xb', xb.build,         { desc = '[X]code [B]uild' })
-      vim.keymap.set('n', '<leader>xr', xb.run,           { desc = '[X]code [R]un' })
-      vim.keymap.set('n', '<leader>xt', xb.run_tests,     { desc = '[X]code [T]ests' })
-      vim.keymap.set('n', '<leader>xd', xb.select_device, { desc = '[X]code [D]evice' })
-      vim.keymap.set('n', '<leader>xs', xb.select_scheme, { desc = '[X]code [S]cheme' })
+      vim.keymap.set('n', '<leader>mxl', xb.toggle_logs,   { desc = '[X]code [L]ogs' })
+      vim.keymap.set('n', '<leader>mxb', xb.build,         { desc = '[X]code [B]uild' })
+      vim.keymap.set('n', '<leader>mxr', xb.run,           { desc = '[X]code [R]un' })
+      vim.keymap.set('n', '<leader>mxt', xb.run_tests,     { desc = '[X]code [T]ests' })
+      vim.keymap.set('n', '<leader>mxd', xb.select_device, { desc = '[X]code [D]evice' })
+      vim.keymap.set('n', '<leader>mxs', xb.select_scheme, { desc = '[X]code [S]cheme' })
     end,
   },
 }

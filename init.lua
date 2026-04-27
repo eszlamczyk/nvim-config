@@ -169,6 +169,13 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- Load project-local config files (.nvim.lua / .nvimrc / .exrc)
+-- Each file must be explicitly trusted on first load via `:trust`
+vim.o.exrc = true
+
+-- Custom keymaps (loaded after options, before plugins)
+require('custom.keymaps')
+
 -- [[ macOS compatibility ]]
 -- Makes nvim behave like it does on Linux (e.g. Arch).
 -- NOTE: Option-as-Meta (<M-...> mappings) also requires your terminal to send
@@ -192,6 +199,7 @@ end
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true })
 
 -- Diagnostic Config & Keymaps
 -- See :help vim.diagnostic.Opts
@@ -339,10 +347,12 @@ require('lazy').setup({
       -- Document existing key chains
       spec = {
         { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
-        { '<leader>t', group = '[T]oggle' },
+        { '<leader>t', group = 'Toggle [T]erminal' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } }, -- Enable gitsigns recommended keymaps first
         { 'gr', group = 'LSP Actions', mode = { 'n' } },
-        { '<leader>x', group = '[X]code' },
+        { '<leader>m',  group = '[M]obile' },
+        { '<leader>mx', group = '[X]code' },
+        { '<leader>ma', group = '[A]ndroid' },
       },
     },
   },
@@ -411,12 +421,21 @@ require('lazy').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
-        -- pickers = {}
+        defaults = {
+          mappings = {
+            i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+          },
+          -- ripgrep args used by live_grep — respects .gitignore by default
+          vimgrep_arguments = {
+            'rg', '--color=never', '--no-heading', '--with-filename',
+            '--line-number', '--column', '--smart-case',
+          },
+        },
+        pickers = {
+          find_files = {
+            hidden = true, -- show dotfiles, still respects .gitignore
+          },
+        },
         extensions = {
           ['ui-select'] = { require('telescope.themes').get_dropdown() },
         },
@@ -972,7 +991,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommended keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
