@@ -19,6 +19,13 @@ return {
   ---@type neotree.Config
   opts = {
     filesystem = {
+      filtered_items = {
+        visible = true,
+        hide_gitignored = true,
+        hide_dotfiles = false,
+        never_show = { '.git', '.idea', '.vscode', '.venv' },
+        never_show_by_pattern = { '*.DS_Store', '.DS_Store' },
+      },
       window = {
         mappings = {
           ['<Esc>'] = 'close_window',
